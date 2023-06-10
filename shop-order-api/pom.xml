@@ -19,5 +19,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <!--引入product api工程-->
+        <dependency>
+            <groupId>com.xueyin</groupId>
+            <artifactId>shop-product-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

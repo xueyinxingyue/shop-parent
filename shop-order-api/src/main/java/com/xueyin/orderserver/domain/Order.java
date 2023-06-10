@@ -1,11 +1,9 @@
 package com.xueyin.orderserver.domain;
 
+import com.xueyin.productserver.domain.Product;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 //订单
 @Entity(name = "t_shop_order")
@@ -23,4 +21,8 @@ public class Order {
     private Double pprice;//商品单价
     //数量
     private Integer number;//购买数量
+
+    //包含商品信息
+    @Transient
+    private Product product;
 }
