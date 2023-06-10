@@ -20,3 +20,17 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+
+#配置ribbon负载均衡策略
+product-service: #服务提供者的名称
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+    MaxAutoRetries: 0
+    MaxAutoRetriesNextServer: 0
+#配置feign超时时间  默认1s
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
