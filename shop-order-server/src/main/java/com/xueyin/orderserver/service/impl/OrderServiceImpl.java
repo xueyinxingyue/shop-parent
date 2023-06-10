@@ -5,14 +5,21 @@ import com.xueyin.orderserver.domain.Order;
 import com.xueyin.orderserver.service.IOrderService;
 import com.xueyin.productserver.domain.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements IOrderService {
     //注入远程调用的对象
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @Autowired
     private OrderDao orderDao;
@@ -43,7 +50,17 @@ public class OrderServiceImpl implements IOrderService {
         //在根据订单中存储的pid查询商品的信息   product
         //远程商品微服务中根据商品id查询商品的接口
         //  http://localhost:8081/get/1     {"pid":1,"pname":"小米","pprice":1000.0,"stock":5000}
-        Product product = restTemplate.getForObject("http://localhost:8081/get/" + order.getPid(), Product.class);
+//        Product product = restTemplate.getForObject("http://localhost:8081/get/" + order.getPid(), Product.class);
+
+        //获取nacos中的服务
+        List<ServiceInstance> instanceList = discoveryClient.getInstances("product-service");
+        //从instanceList获取某一个服务实例对象
+        ServiceInstance instance = instanceList.get(0);
+        //发起远程调用    远程调用商品微服务中根据商品id查询商品的接口
+        //拼接请求地址
+        String url = "http://" + instance.getHost() + ":" + instance.getPort();//http://localhost:8081
+        Product product = restTemplate.getForObject(url + "/get/" + order.getPid(), Product.class);
+
         //将product存放到order中
         order.setProduct(product);
 
