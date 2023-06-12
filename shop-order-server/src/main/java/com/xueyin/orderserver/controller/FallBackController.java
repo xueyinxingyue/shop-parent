@@ -20,4 +20,15 @@ public class FallBackController {
         }
         return "fallBack1";
     }
+
+    int i = 0;
+    @RequestMapping("/fallBack2")
+    public String fallBack2() {
+        log.info("fallBack2执行业务逻辑");
+        //模拟出现异常，异常比例为33%
+        if (++i % 3 == 0) {
+            throw new RuntimeException();
+        }
+        return "fallBack2";
+    }
 }
