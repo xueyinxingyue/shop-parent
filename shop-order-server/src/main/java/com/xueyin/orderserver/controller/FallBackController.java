@@ -22,6 +22,7 @@ public class FallBackController {
     }
 
     int i = 0;
+
     @RequestMapping("/fallBack2")
     public String fallBack2() {
         log.info("fallBack2执行业务逻辑");
@@ -30,5 +31,14 @@ public class FallBackController {
             throw new RuntimeException();
         }
         return "fallBack2";
+    }
+
+    @RequestMapping("/fallBack3")
+    public String fallBack3(String name) {
+        log.info("fallBack3执行业务逻辑");
+        if ("wolfcode".equals(name)) {
+            throw new RuntimeException();
+        }
+        return "fallBack3";
     }
 }
